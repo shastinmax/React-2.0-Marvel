@@ -82,7 +82,6 @@ class RandomChar extends Component {
             </div>
         )
     }
-
 }
 
 const View = ({char}) => {
