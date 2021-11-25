@@ -1,69 +1,52 @@
 import {useEffect, useRef, useState} from 'react';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import './charList.scss';
 import PropTypes from "prop-types";
 
 const CharList = (props) => {
 
-    const [charList,setCharList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+    const [charList, setCharList] = useState([]);
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [offset, setOffset] = useState(210);
     const [charEnded, setCharEnded] = useState(false);
 
+    const {loading, error, getAllCharacters} = useMarvelService()
 
-    const marvelService = new MarvelService();
-
-    useEffect(()=>{
+    useEffect(() => {
         onRequest()
-    },[])
+    }, [])
 
 
-   const onRequest = (offset) => {
-        onCharListLoading()
-        marvelService.getAllCharacters(offset)
+    const onRequest = (offset) => {
+        setNewItemLoading(true)
+        getAllCharacters(offset)
             .then(onCharListLoaded)
-            .catch(onError)
     }
 
-  const onCharListLoading = () => {
-      setNewItemLoading(true)
-    }
-
-  const onCharListLoaded = (newCharList) => {
+    const onCharListLoaded = (newCharList) => {
         let ended = false;
         if (newCharList.length < 9) {
             ended = true
         }
 
-        setCharList(charList=>[...charList, ...newCharList])
-        setLoading(false)
+        setCharList(charList => [...charList, ...newCharList])
         setNewItemLoading(false)
-        setOffset(offset=>offset + 9)
+        setOffset(offset => offset + 9)
         setCharEnded(ended)
-
     }
 
-    const onError = () => {
-        setError(true);
-        setLoading(false)
-    }
-
-   const itemRefs = useRef([]);
+    const itemRefs = useRef([]);
 
 
-
-   const focusOnItem = (id) => {
+    const focusOnItem = (id) => {
         itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
         itemRefs.current[id].classList.add('char__item_selected');
         itemRefs.current[id].focus();
     }
 
-   function renderItems(arr)
-    {
+    function renderItems(arr) {
         const items = arr.map((item, i) => {
             let imgStyle = {'objectFit': 'cover'};
             if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
@@ -74,7 +57,7 @@ const CharList = (props) => {
                 <li
                     className="char__item"
                     tabIndex={0}
-                    ref={el=>itemRefs.current[i]=el}
+                    ref={el => itemRefs.current[i] = el}
                     key={item.id}
                     onClick={() => {
                         props.onCharSelected(item.id);
