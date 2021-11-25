@@ -69,7 +69,7 @@ const RandomChar =()=>{
                         Or choose another one
                     </p>
                     <button className="button button__main"
-                            onClick={this.updateChar}>
+                            onClick={updateChar}>
                         <div className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
