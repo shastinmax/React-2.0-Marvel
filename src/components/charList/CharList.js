@@ -55,7 +55,7 @@ const CharList = (props) => {
             }
 
             return (
-                <CSSTransition in={inProp} timeout={200} classNames="my-node">
+                <CSSTransition in={item.id} timeout={500} classNames="my-node">
                 <li
                     className="char__item"
                     tabIndex={0}
