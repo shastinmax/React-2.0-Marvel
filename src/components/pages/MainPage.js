@@ -9,7 +9,7 @@ import {useState} from "react";
 const MainPage = () => {
 
     const [selectedChar, setChar] = useState(null)
-
+console.log(typeof useState,'fj')
     const onCharSelected = (id) => {
         setChar(id)
     }
